@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Condominio - Anuncios</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header y navegación */
+        header {
+            background-color: #4a90e2;
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover, nav ul li a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #357abD;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        /* Contenido principal */
+        main {
+            flex: 1;
+            padding: 30px 0;
+        }
+        
+        .page-title {
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        /* Grid de 2 columnas */
+        .anuncios-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .anuncios-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Sección 1: Anuncios publicados */
+        .anuncios-publicados {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            color: #333;
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-btn {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #4a90e2;
+            color: white;
+        }
+        
+        .post {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        
+        .post:last-child {
+            border-bottom: none;
+        }
+        
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .post-title {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .post-date {
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .post-content {
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .post-category {
+            background-color: #e9f2fe;
+            color: #4a90e2;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+        
+        .load-more {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background-color: #f9f9f9;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+            color: #555;
+            transition: background-color 0.3s;
+        }
+        
+        .load-more:hover {
+            background-color: #ececec;
+        }
+        
+        /* Sección 2: Añadir anuncios */
+        .anadir-anuncio {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #4a90e2;
+            outline: none;
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .publish-btn {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .publish-btn:hover {
+            background-color: #357abD;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .copyright {
+            font-size: 14px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #4a90e2;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🏢</span>
+                    <span>Portal del Condominio</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="Inicio.html">Inicio</a></li>
+                        <li><a href="Anuncios.html" class="active">Anuncios</a></li>
+                        <li><a href="#">Reservas</a></li>
+                        <li><a href="#">Documentos</a></li>
+                        <li><a href="#">Contacto</a></li>
+                    </ul>
+                </nav>
+                <div class="user-info">
+                    <div class="user-avatar">R</div>
+                    <span>Residente</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 class="page-title">Anuncios del Condominio</h1>
+        
+        <div class="anuncios-grid">
+            <!-- Sección 1: Anuncios publicados -->
+            <section class="anuncios-publicados">
+                <h2 class="section-title">Anuncios Publicados</h2>
+                
+                <div class="filter-options">
+                    <button class="filter-btn active">Todos</button>
+                    <button class="filter-btn">Información</button>
+                    <button class="filter-btn">Importante</button>
+                    <button class="filter-btn">Venta</button>
+                    <button class="filter-btn">Servicios</button>
+                </div>
+                
+                <div class="anuncios-list">
+                    <div class="post">
+                        <div class="post-header">
+                            <span class="post-title">Corte de agua programado</span>
+                            <span class="post-date">15/05/2025</span>
+                        </div>
+                        <p class="post-content">Se informa a todos los residentes que habrá un corte de agua programado el día 20 de mayo de 8:00 a 14:00 hrs para realizar mantención en las bombas de agua.</p>
+                        <div class="post-footer">
+                            <span>Publicado por: Administración</span>
+                            <span class="post-category">Información</span>
+                        </div>
+                    </div>
+                    
+                    <div class="post">
+                        <div class="post-header">
+                            <span class="post-title">Reunión de propietarios</span>
+                            <span class="post-date">10/05/2025</span>
+                        </div>
+                        <p class="post-content">Se convoca a todos los propietarios a la reunión anual que se realizará el día 25 de mayo a las 19:00 hrs en el salón de eventos.</p>
+                        <div class="post-footer">
+                            <span>Publicado por: Comité de Administración</span>
+                            <span class="post-category">Importante</span>
+                        </div>
+                    </div>
+                    
+                    <div class="post">
+                        <div class="post-header">
+                            <span class="post-title">Vendo muebles en buen estado</span>
+                            <span class="post-date">08/05/2025</span>
+                        </div>
+                        <p class="post-content">Vendo juego de comedor y sofá en excelente estado. Interesados contactar al departamento 503 o llamar al número 555-123-4567.</p>
+                        <div class="post-footer">
+                            <span>Publicado por: Apartamento 503</span>
+                            <span class="post-category">Venta</span>
+                        </div>
+                    </div>
+                    
+                    <div class="post">
+                        <div class="post-header">
+                            <span class="post-title">Clases de yoga</span>
+                            <span class="post-date">05/05/2025</span>
+                        </div>
+                        <p class="post-content">Ofrezco clases de yoga para principiantes los martes y jueves de 19:00 a 20:00 hrs en la sala común. Llevar mat y ropa cómoda. Valor por clase: $10.</p>
+                        <div class="post-footer">
+                            <span>Publicado por: Apartamento 205</span>
+                            <span class="post-category">Servicios</span>
+                        </div>
+                    </div>
+                    
+                    <div class="post">
+                        <div class="post-header">
+                            <span class="post-title">Mantenimiento ascensores</span>
+                            <span class="post-date">01/05/2025</span>
+                        </div>
+                        <p class="post-content">Se realizará mantenimiento a los ascensores el día 05 de mayo. El ascensor 1 estará fuera de servicio de 9:00 a 12:00 hrs y el ascensor 2 de 13:00 a 16:00 hrs.</p>
+                        <div class="post-footer">
+                            <span>Publicado por: Administración</span>
+                            <span class="post-category">Información</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="load-more">Cargar más anuncios</button>
+            </section>
+            
+            <!-- Sección 2: Añadir anuncio -->
+            <section class="anadir-anuncio">
+                <h2 class="section-title">Publicar Nuevo Anuncio</h2>
+                
+                <form id="nuevo-anuncio-form">
+                    <div class="form-group">
+                        <label for="titulo">Título del anuncio</label>
+                        <input type="text" id="titulo" name="titulo" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="categoria">Categoría</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="">Seleccionar categoría</option>
+                            <option value="informacion">Información</option>
+                            <option value="importante">Importante</option>
+                            <option value="venta">Venta</option>
+                            <option value="servicios">Servicios</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mensaje">Contenido del anuncio</label>
+                        <textarea id="mensaje" name="mensaje" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contacto">Información de contacto (opcional)</label>
+                        <input type="text" id="contacto" name="contacto" placeholder="Teléfono, email, nº apartamento...">
+                    </div>
+                    
+                    <div class="form-footer">
+                        <button type="submit" class="publish-btn">Publicar anuncio</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="copyright">© 2025 Portal del Condominio - Todos los derechos reservados</div>
+                <div class="footer-links">
+                    <a href="#">Política de Privacidad</a>
+                    <a href="#">Términos de Uso</a>
+                    <a href="#">Ayuda</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Funcionalidad para los filtros de anuncios
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Quitar la clase active de todos los botones
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Añadir la clase active al botón clicado
+                this.classList.add('active');
+                
+                // Aquí iría la lógica para filtrar los anuncios según la categoría
+                // En un sistema real, haríamos una llamada AJAX para obtener los anuncios filtrados
+                console.log('Filtrar por:', this.textContent.trim());
+            });
+        });
+        
+        // Funcionalidad para el botón "Cargar más anuncios"
+        document.querySelector('.load-more').addEventListener('click', function() {
+            // En un sistema real, aquí cargaríamos más anuncios mediante AJAX
+            console.log('Cargar más anuncios');
+        });
+        
+        // Funcionalidad para el formulario de nuevo anuncio
+        document.getElementById('nuevo-anuncio-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Obtener los valores del formulario
+            const titulo = document.getElementById('titulo').value;
+            const categoria = document.getElementById('categoria').value;
+            const mensaje = document.getElementById('mensaje').value;
+            const contacto = document.getElementById('contacto').value;
+            
+            // En un sistema real, aquí enviaríamos los datos al servidor mediante AJAX
+            console.log('Nuevo anuncio:', {titulo, categoria, mensaje, contacto});
+            
+            // Mostrar un mensaje de éxito (en un sistema real, esto se haría después de recibir la respuesta del servidor)
+            alert('¡Anuncio publicado con éxito!');
+            
+            // Limpiar el formulario
+            this.reset();
+        });
+    </script>
+</body>
+</html>
